@@ -1,7 +1,7 @@
 
 ### Creating a generalisable function to download all the reviews for a given product ID
 
-extract_reviews <- function(product_id = NULL) {
+extract_reviews <- function(product_id = NULL, delay = 5) {
 
   library(dplyr)
   library(rvest)
@@ -33,12 +33,12 @@ extract_reviews <- function(product_id = NULL) {
     
     loop_url <- paste0("https://www.amazon.co.uk/product-reviews/", product_id, "/?pageNumber=", page_number)
 
-    Sys.sleep(runif(1, 3, 5)) ## Pause for 3 to 5 seconds
+    Sys.sleep(runif(1, max(delay-2, 0.5), delay))
 
     df <- read_html(loop_url) %>% 
       html_nodes('.view-point .a-col-left') %>% 
-      map_df(~list(Reviewer = html_nodes(.x, '.a-profile-name') %>% 
-                     html_text(),
+      map_df(~list(#Reviewer = html_nodes(.x, '.a-profile-name') %>% 
+                  #   html_text(),
                    Date = html_nodes(.x, '.review-date') %>% 
                      html_text(),
                    Title = html_nodes(.x, '#cm_cr-review_list .a-color-base') %>% 
@@ -61,12 +61,12 @@ extract_reviews <- function(product_id = NULL) {
     
     loop_url <- paste0("https://www.amazon.com/product-reviews/", product_id, "/?pageNumber=", page_number)
     
-    Sys.sleep(runif(1, 3, 5)) ## Pause for 3 to 5 seconds
+    Sys.sleep(runif(1, max(delay-2, 0.5), delay))
     
     df <- read_html(loop_url) %>% 
       html_nodes('.view-point .a-col-left') %>% 
-      map_df(~list(Reviewer = html_nodes(.x, '.a-profile-name') %>% 
-                     html_text(),
+      map_df(~list(#Reviewer = html_nodes(.x, '.a-profile-name') %>% 
+                  #   html_text(),
                    Date = html_nodes(.x, '.review-date') %>% 
                      html_text(),
                    Title = html_nodes(.x, '#cm_cr-review_list .a-color-base') %>% 
