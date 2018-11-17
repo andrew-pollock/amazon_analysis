@@ -14,6 +14,7 @@ library(ggplot2)
 heir_data <- read.csv("data/heir_data.csv")
 
 cutdown_data <- heir_data[, c("Date", "Review_Score")]
+cutdown_data$Date <- as.Date(cutdown_data$Date)
 
 cutdown_data <- arrange(cutdown_data, Date)
 cutdown_data$avg_review <- round(cummean(cutdown_data$Review_Score), 2)
