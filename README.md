@@ -36,7 +36,7 @@ ggplot(review_score_data, aes(x=Date)) +
      geom_histogram(fill = "white", color = "blue", bins = 40) +
      theme_bw() +
      theme(plot.title = element_text(hjust = 0.5), panel.grid.minor.x = element_blank()) +
-     labs(x = "Date of Reviews", y = "Number of Review", title = "Distribution of Reviews over Time") +
+     labs(x = "Date of Reviews", y = "Number of Reviews", title = "Distribution of Reviews over Time") +
      scale_x_date(date_breaks = "1 year", date_labels = "%b %Y", limits = as.Date(c('2008-01-01','2018-12-31')))
 ```
 ![Frequency of reviews over time](graphs/Dist_Reviews_Over_Time.png)
@@ -60,8 +60,9 @@ ggplot(cum_avg_review, aes(x=Date, y=avg_review)) +
   geom_line(size = 2) +
   theme_bw() +
   ylim(4.25,4.6) +  
-  ylab("Average Review Score") +
+  labs(x = "Date of Reviews", y = "Average Review Score", title = "Average Review Score") +
   scale_x_date(date_breaks = "6 month", date_labels = "%b %Y", limits = as.Date(c('2010-01-01','2018-12-31')), expand=c(0,0)) +
+  theme(plot.title = element_text(hjust = 0.5)) +
   geom_vline(xintercept = movie_releases$release_dates) + 
   geom_text(data = movie_releases, aes(x=release_dates, y = 4.35), label=movie_releases$movies, vjust=-0.5, size=4, angle = 90) +
   geom_vline(xintercept = as.Date("2014-11-28"), linetype="longdash") +
