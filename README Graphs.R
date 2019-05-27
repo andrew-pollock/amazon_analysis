@@ -14,9 +14,10 @@ review_score_data <- heir_data[, c("Date", "Review_Score")]
 review_score_data$Date <- as.Date(review_score_data$Date)
 
 ggplot(review_score_data, aes(x=Date)) +
-  geom_histogram() +
+  geom_histogram(fill = "white", color = "blue", bins = 40) +
   theme_bw() +
-  ## Add title, remove y grid lines, 
+  theme(plot.title = element_text(hjust = 0.5), panel.grid.minor.x = element_blank()) +
+  labs(x = "Date of Reviews", y = "Number of Reviews", title = "Distribution of Reviews over Time") +
   scale_x_date(date_breaks = "1 year", date_labels = "%b %Y", limits = as.Date(c('2008-01-01','2018-12-31')))
 
 # Reviews are quite sporadic prior to 2012, so going forward we'll focus on reviews from 2012 onwards
@@ -42,7 +43,7 @@ ggplot(cum_avg_review, aes(x=Date, y=avg_review)) +
   geom_line(size = 2) +
   theme_bw() +
   ylim(4.25,4.6) +  
-  ylab("Average Review Score") +
+  labs(x = "Date of Reviews", y = "Average Review Score", title = "Average Review Score") +
   scale_x_date(date_breaks = "6 month", date_labels = "%b %Y", limits = as.Date(c('2010-01-01','2018-12-31')), expand=c(0,0)) +
   geom_vline(xintercept = movie_releases$release_dates) + 
   geom_text(data = movie_releases, aes(x=release_dates, y = 4.35), label=movie_releases$movies, vjust=-0.5, size=4, angle = 90) +
@@ -58,9 +59,10 @@ ggplot(cum_avg_review, aes(x=Date, y=avg_review)) +
 cum_avg_review$TFA_Ind <- "Pre-Buyout"
 cum_avg_review[cum_avg_review$Date >= '2012-10-30',]$TFA_Ind <- "Before TFA"
 cum_avg_review[cum_avg_review$Date >= '2015-12-08',]$TFA_Ind <- "After TFA"
+cum_avg_review$TFA_Ind <- as.factor(cum_avg_review$TFA_Ind)
 
 ggplot(cum_avg_review, aes(x=Date, y=avg_review)) +
-  geom_line(size = 2) +
+  geom_line(size = 2, aes(color = TFA_Ind)) +
   theme_bw() +
   ylim(4.25,4.6) +  
   ylab("Average Review Score") +
@@ -71,7 +73,7 @@ ggplot(cum_avg_review, aes(x=Date, y=avg_review)) +
   geom_text(x=as.Date("2014-11-28"), y = 4.35, label="Force Awakens Trailer", vjust=-0.5, size=4, angle = 90) +
   geom_vline(xintercept = as.Date("2012-10-30"), linetype="longdash") +
   geom_text(x=as.Date("2012-10-30"), y = 4.35, label="Disney Buyout Announced", vjust=-0.5, size=4, angle = 90) +
-  geom_smooth(method='lm', aes(color = TFA_Ind), se=F, size = 1.5, linetype = "longdash")
+  geom_smooth(method='lm', color = "black", aes(group = TFA_Ind), se=F, size = 1.5, linetype = "longdash")
 
 # By manually fitting linear models we can look at the coefficients
 
